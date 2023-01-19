@@ -1,1 +1,3 @@
-# This is a starter kit for applications on NextJS with React / Typescript / Jest
+# Test react app
+
+Clone and run `yarn`
