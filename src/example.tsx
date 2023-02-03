@@ -1,5 +1,5 @@
 import { styled } from 'linaria/react';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 export const Example = () => {
   return (
@@ -11,25 +11,34 @@ export const Example = () => {
 
 const InputText = () => {
   
-  const [value, setValue] = useState(0)
+  const [celsius, setValueСelsius] = useState(-272.1)
+  const [farengeight, setValueFarengeight] = useState(-459.67)
 
   function kelvToCels() {
+
     const kelvins = event?.target?.value
     const celsius = (kelvins - 272.1).toFixed(1)
+    const farengeight = (celsius * 9 / 5 + 32).toFixed(1)
+
     if (celsius > 99999 || celsius < -99999) { 
-      setValue('Такой температуры не бывает :)') 
-    } else setValue(celsius)
+      setValueСelsius(`"Такой температуры не бывает" - `) 
+      setValueFarengeight(`"Ага, это слишком" - `) 
+    } else {
+      setValueСelsius(celsius)
+      setValueFarengeight(farengeight) 
+    }
   }
 
   return (
     <div>
       <label htmlFor="input">Enter the Kelvins</label>
 
-      <input type="number" id="input" placeholder='100' style={inputStyles}
+      <input type="number" id="input" placeholder='0' style={inputStyles}
       onChange={kelvToCels}/>
 
       <div style={{minWidth: '40px', width: 'fit-content'}}>
-        <p> {value + ' °C' || '- - - - °C'} </p>
+        <p> {celsius + ' °C'} </p>
+        <p> {farengeight + ' °F'} </p>
       </div>
     </div>
   )
@@ -54,7 +63,7 @@ const inputStyles = {
   background: '#fff',
   color: '#301a57',
   marginTop: '10px',
-  width: '194px',
+  width: '95%',
   border: '1px solid #c0ffc0',
   borderRadius: '3px'
 }
