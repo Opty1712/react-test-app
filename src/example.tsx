@@ -13,6 +13,7 @@ const Root = styled.div`
   background-color: red;
   margin: 10px;
   padding: 20px;
+  display: flex;
 `;
 const Input = styled.input`
   font-size: 17px;
