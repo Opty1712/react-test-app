@@ -5,6 +5,7 @@ export const Example = () => {
 };
 
 const Root = styled.div`
-  background-color: green;
+  background-color: black;
   padding: 20px;
+  display: flex;
 `;
