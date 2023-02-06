@@ -1,5 +1,6 @@
 import { styled } from 'linaria/react';
 import React, { useState } from 'react';
+import { css } from 'linaria';
 
 export const Example = () => {
   return (
@@ -33,7 +34,7 @@ const InputText = () => {
     <div>
       <label htmlFor="input">Enter the Kelvins</label>
 
-      <input type="number" id="input" placeholder='0' style={inputStyles}
+      <input type="number" id="input" placeholder='0' className={inputClassName}
       onChange={kelvToCels}/>
 
       <div style={{minWidth: '40px', width: 'fit-content'}}>
@@ -45,25 +46,18 @@ const InputText = () => {
 }
 
 const Root = styled.div`
-  font-family: Roboto, sans-serif;
-  font-size: 0.8em;
-  background-color: #84cdfa;
+  color: #0ff;
+  background-color: red;
+  margin: 10px;
   padding: 20px;
-  box-shadow: 1px 2px 4px 2px rgba(0,0,0,0.2);
-  border-radius: 10px;
-  width: 230px;
-  height: 100px;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  display: flex;
 `;
 
-const inputStyles = {
-  background: '#fff',
-  color: '#301a57',
-  marginTop: '10px',
-  width: '95%',
-  border: '1px solid #c0ffc0',
-  borderRadius: '3px'
-}
+const inputClassName = css`
+  background: #fff;
+  color: #301a57;
+  marginTop: 10px;
+  width: 95%;
+  border: 1px solid #c0ffc0;
+  borderRadius: 3px
+`
