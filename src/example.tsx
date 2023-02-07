@@ -1,63 +1,52 @@
 import { styled } from 'linaria/react';
-import React, { useState } from 'react';
-import { css } from 'linaria';
+import React, { ChangeEvent, useState } from 'react';
 
 export const Example = () => {
+  
+  // const [systemName, setSystemName] = useState<string | number>()
+  const [celsius, setCelsius] = useState<string | number>()
+  const [kelvins, setKelvins] = useState<string | number>()
+
+  // const onChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const [systemName, setSystemName] = useState<string | number>()
+  //   const systemNameValue = Number(event?.target?.value)
+  //   setSystemName(systemNameValue)
+  // }
+  
+  const onCelsiusChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const celsius = Number(event?.target?.value)
+    setCelsius(celsius)
+    setKelvins(celsius * 2)
+  }
+  
+  const onKelvinsChange = (event: ChangeEvent<HTMLInputElement>) => {
+    const kelvins = Number(event?.target?.value)
+    setKelvins(kelvins)
+    setCelsius(kelvins / 2)
+  }  
+
+  const systems = [
+    { title: 'Celsius', symbol: '°C', onch: onCelsiusChange, val: celsius },
+    { title: 'Kelvins', symbol: 'K', onch: onKelvinsChange, val: kelvins }
+  ]
+
   return (
     <Root>
-      <InputText /> 
+      {systems.map(({ title, symbol, onch, val }) => 
+        <div>
+          <h2>{title}</h2>  
+          <p><input type="number" onChange={onch} value={val} /> {symbol}</p>
+        </div>)
+      }
     </Root>
   );
 };
 
-const InputText = () => {
-  
-  const [celsius, setValueСelsius] = useState(-272.1)
-  const [farengeight, setValueFarengeight] = useState(-459.67)
-
-  function kelvToCels() {
-
-    const kelvins = event?.target?.value
-    const celsius = (kelvins - 272.1).toFixed(1)
-    const farengeight = (celsius * 9 / 5 + 32).toFixed(1)
-
-    if (celsius > 99999 || celsius < -99999) { 
-      setValueСelsius(`"Такой температуры не бывает" - `) 
-      setValueFarengeight(`"Ага, это слишком" - `) 
-    } else {
-      setValueСelsius(celsius)
-      setValueFarengeight(farengeight) 
-    }
-  }
-
-  return (
-    <div>
-      <label htmlFor="input">Enter the Kelvins</label>
-
-      <input type="number" id="input" placeholder='0' className={inputClassName}
-      onChange={kelvToCels}/>
-
-      <div style={{minWidth: '40px', width: 'fit-content'}}>
-        <p> {celsius + ' °C'} </p>
-        <p> {farengeight + ' °F'} </p>
-      </div>
-    </div>
-  )
-}
-
 const Root = styled.div`
-  color: #0ff;
-  background-color: red;
+  color: #black;
+  background-color: #f9f9f9;
   margin: 10px;
   padding: 20px;
   display: flex;
+  flex-direction: column;
 `;
-
-const inputClassName = css`
-  background: #fff;
-  color: #301a57;
-  marginTop: 10px;
-  width: 95%;
-  border: 1px solid #c0ffc0;
-  borderRadius: 3px
-`
