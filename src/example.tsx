@@ -2,17 +2,9 @@ import { styled } from 'linaria/react';
 import React, { ChangeEvent, useState } from 'react';
 
 export const Example = () => {
-  
-  // const [systemName, setSystemName] = useState<string | number>()
-  const [celsius, setCelsius] = useState<string | number>()
-  const [kelvins, setKelvins] = useState<string | number>()
+  const [cel, setCelsius] = useState<string | number>('')
+  const [kel, setKelvins] = useState<string | number>('')
 
-  // const onChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const [systemName, setSystemName] = useState<string | number>()
-  //   const systemNameValue = Number(event?.target?.value)
-  //   setSystemName(systemNameValue)
-  // }
-  
   const onCelsiusChange = (event: ChangeEvent<HTMLInputElement>) => {
     const celsius = Number(event?.target?.value)
     setCelsius(celsius)
@@ -26,17 +18,18 @@ export const Example = () => {
   }  
 
   const systems = [
-    { title: 'Celsius', symbol: '°C', onch: onCelsiusChange, val: celsius },
-    { title: 'Kelvins', symbol: 'K', onch: onKelvinsChange, val: kelvins }
+    { title: 'Celsius', symbol: '°C', func: onCelsiusChange, val: cel },
+    { title: 'Kelvins', symbol: 'K', func: onKelvinsChange, val: kel }
   ]
 
   return (
     <Root>
-      {systems.map(({ title, symbol, onch, val }) => 
-        <div>
+      {systems.map(({ title, symbol, func, val }) => 
+        <div key={title}>
           <h2>{title}</h2>  
-          <p><input type="number" onChange={onch} value={val} /> {symbol}</p>
-        </div>)
+          <p><input type="number" onChange={func} value={val} id={title} /> {symbol}</p>
+        </div>
+        )
       }
     </Root>
   );
