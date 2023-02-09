@@ -1,42 +1,65 @@
 import { styled } from 'linaria/react';
-import React, { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState } from 'react';
+
+type Values = Record<string, { value: number; name: string }>;
 
 export const Example = () => {
-  const [cel, setCelsius] = useState<string | number>('')
-  const [kel, setKelvins] = useState<string | number>('')
+  const [values, setValues] = useState<Values>({
+    celsius: { value: 0, name: 'celsius' },
+    kelvins: { value: 0, name: 'kelvins' },
+    far: { value: 0, name: 'far' }
+  });
 
-  const onCelsiusChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const celsius = Number(event?.target?.value)
-    setCelsius(celsius)
-    setKelvins(celsius * 2)
-  }
-  
-  const onKelvinsChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const kelvins = Number(event?.target?.value)
-    setKelvins(kelvins)
-    setCelsius(kelvins / 2)
-  }  
+  const getOnChangeHandler = (key: string) => (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const value = Number(event.target.value);
 
-  const systems = [
-    { title: 'Celsius', symbol: '°C', func: onCelsiusChange, val: cel },
-    { title: 'Kelvins', symbol: 'K', func: onKelvinsChange, val: kel }
-  ]
+    setValues((values) => {
+      const newValues = {
+        ...values,
+        [key]: { value, name: key }
+      };
+
+      if (key === 'celsius') {
+        newValues.kelvins = { name: key, value: value * 2 };
+        newValues.far = { name: key, value: value + 2 };
+      }
+
+      if (key === 'kelvins') {
+        newValues.celsius = { name: key, value: value / 2 };
+        newValues.far = { name: key, value: value + 2 };
+      }
+
+      if (key === 'far') {
+        newValues.celsius = { name: key, value: value + 2 };
+        newValues.kelvins = { name: key, value: value * 2 };
+      }
+
+      return newValues;
+    });
+  };
 
   return (
     <Root>
-      {systems.map(({ title, symbol, func, val }) => 
-        <div key={title}>
-          <h2>{title}</h2>  
-          <p><input type="number" onChange={func} value={val} id={title} /> {symbol}</p>
+      {Object.entries(values).map(([key, content]) => (
+        <div key={key}>
+          <h2>{content.name}</h2>
+          <p>
+            <input
+              type="number"
+              onChange={getOnChangeHandler(key)}
+              value={content.value}
+            />
+          </p>
         </div>
-        )
-      }
+      ))}
     </Root>
   );
 };
 
 const Root = styled.div`
-  color: #black;
+  color: black;
   background-color: #f9f9f9;
   margin: 10px;
   padding: 20px;
