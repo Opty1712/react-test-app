@@ -1,45 +1,61 @@
 import { styled } from 'linaria/react';
-import React, { ChangeEvent, useState } from 'react';
+import React, { ChangeEvent } from 'react';
+
+const systems: Systems = {
+  celsius: {
+    formula: (v: number) => v + 30,
+    backFormula: (v: number) => v - 30
+  },
+  kelvin: { 
+    formula: (v: number) => v, 
+    backFormula: (v: number) => v 
+  }
+};
+
+type Systems = {
+  celsius: {
+    formula: (v: number) => number,
+    backFormula: (v: number) => number
+  },
+  kelvin: {
+    formula: (v: number) => number,
+    backFormula: (v: number) => number
+  }
+};
 
 export const Example = () => {
-  const [cel, setCelsius] = useState<string | number>('')
-  const [kel, setKelvins] = useState<string | number>('')
+  const [baseTemp, setBaseTemp] = React.useState(0);
 
-  const onCelsiusChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const celsius = Number(event?.target?.value)
-    setCelsius(celsius)
-    setKelvins(celsius * 2)
-  }
-  
-  const onKelvinsChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const kelvins = Number(event?.target?.value)
-    setKelvins(kelvins)
-    setCelsius(kelvins / 2)
-  }  
-
-  const systems = [
-    { title: 'Celsius', symbol: '°C', func: onCelsiusChange, val: cel },
-    { title: 'Kelvins', symbol: 'K', func: onKelvinsChange, val: kel }
-  ]
+  const getOnChangeHandler = (key: keyof Systems) => (
+    event: ChangeEvent<HTMLInputElement>
+  ) => {
+    const convert = systems[key];
+    const newBaseTemp = convert.backFormula(Number(event.target.value));
+    setBaseTemp(newBaseTemp);
+  };
 
   return (
     <Root>
-      {systems.map(({ title, symbol, func, val }) => 
-        <div key={title}>
-          <h2>{title}</h2>  
-          <p><input type="number" onChange={func} value={val} id={title} /> {symbol}</p>
-        </div>
-        )
-      }
+      {Object.entries(systems).map(([key, formulas]) => {
+        return (
+          <Input
+            key={key}
+            value={formulas.formula(baseTemp)}
+            onChange={getOnChangeHandler(Number(key))}
+          />
+        );
+      })}
     </Root>
   );
 };
 
 const Root = styled.div`
-  color: #black;
-  background-color: #f9f9f9;
+  color: #0ff;
+  background-color: red;
   margin: 10px;
   padding: 20px;
   display: flex;
-  flex-direction: column;
+`;
+const Input = styled.input`
+  font-size: 17px;
 `;
