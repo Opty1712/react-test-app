@@ -4,22 +4,26 @@ import React, { ChangeEvent } from 'react';
 const systems: Systems = {
   celsius: {
     formula: (v: number) => v + 30,
-    backFormula: (v: number) => v - 30
+    backFormula: (v: number) => v - 30,
+    text: 'Something + 30'
   },
   kelvin: { 
     formula: (v: number) => v, 
-    backFormula: (v: number) => v 
+    backFormula: (v: number) => v,
+    text: 'Something'
   }
 };
 
 type Systems = {
-  celsius: {
+  [celsius: string]: {
     formula: (v: number) => number,
-    backFormula: (v: number) => number
+    backFormula: (v: number) => number,
+    text: string
   },
   kelvin: {
     formula: (v: number) => number,
-    backFormula: (v: number) => number
+    backFormula: (v: number) => number,
+    text: string
   }
 };
 
@@ -38,11 +42,14 @@ export const Example = () => {
     <Root>
       {Object.entries(systems).map(([key, formulas]) => {
         return (
+          <Item>
+          <ItemP>{formulas.text}</ItemP>
           <Input
             key={key}
             value={formulas.formula(baseTemp)}
-            onChange={getOnChangeHandler(Number(key))}
+            onChange={getOnChangeHandler(key)}
           />
+          </Item>
         );
       })}
     </Root>
@@ -50,12 +57,24 @@ export const Example = () => {
 };
 
 const Root = styled.div`
-  color: #0ff;
-  background-color: red;
-  margin: 10px;
+  color: #333;
+  background-color: #ceb0ff;
+  margin: 20% auto;
   padding: 20px;
   display: flex;
+  width: fit-content;
+  border-radius: 10px;
 `;
+
 const Input = styled.input`
   font-size: 17px;
+  margin-right: 20px;
 `;
+
+const Item = styled.div`
+  display: flex;
+  flex-direction: column;
+`
+const ItemP = styled.p`
+  margin-top: 0;
+`
