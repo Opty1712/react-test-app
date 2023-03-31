@@ -5,14 +5,14 @@ const returnVOnly = (v: number) => v
 
 const systems: Systems = {
   celsius: {
-    formula: (v: number) => v + 30,
-    backFormula: (v: number) => v - 30,
-    text: 'Something + 30',
-  },
-  kelvin: {
     formula: returnVOnly,
     backFormula: returnVOnly,
     text: 'Something',
+  },
+  kelvin: {
+    formula: (v: number) => v * 2,
+    backFormula: (v: number) => v / 2,
+    text: 'Something * 2',
   },
 }
 
