@@ -1,60 +1,63 @@
-import { styled } from 'linaria/react';
-import React, { ChangeEvent } from 'react';
+import { styled } from 'linaria/react'
+import React, { ChangeEvent } from 'react'
+
+const returnVOnly = (v: number) => v
 
 const systems: Systems = {
   celsius: {
     formula: (v: number) => v + 30,
     backFormula: (v: number) => v - 30,
-    text: 'Something + 30'
+    text: 'Something + 30',
   },
-  kelvin: { 
-    formula: (v: number) => v, 
-    backFormula: (v: number) => v,
-    text: 'Something'
-  }
-};
+  kelvin: {
+    formula: returnVOnly,
+    backFormula: returnVOnly,
+    text: 'Something',
+  },
+}
+
+type TypeOfFormula = (v: number) => number
 
 type Systems = {
   [celsius: string]: {
-    formula: (v: number) => number,
-    backFormula: (v: number) => number,
-    text: string
-  },
-  kelvin: {
-    formula: (v: number) => number,
-    backFormula: (v: number) => number,
+    formula: TypeOfFormula
+    backFormula: TypeOfFormula
     text: string
   }
-};
+  kelvin: {
+    formula: TypeOfFormula
+    backFormula: TypeOfFormula
+    text: string
+  }
+}
 
 export const Example = () => {
-  const [baseTemp, setBaseTemp] = React.useState(0);
+  const [baseTemp, setBaseTemp] = React.useState(0)
 
   const getOnChangeHandler = (key: keyof Systems) => (
     event: ChangeEvent<HTMLInputElement>
   ) => {
-    const convert = systems[key];
-    const newBaseTemp = convert.backFormula(Number(event.target.value));
-    setBaseTemp(newBaseTemp);
-  };
+    const convert = systems[key]
+    const newBaseTemp = convert.backFormula(Number(event.target.value))
+    setBaseTemp(newBaseTemp)
+  }
 
   return (
     <Root>
       {Object.entries(systems).map(([key, formulas]) => {
         return (
-          <Item>
-          <ItemP>{formulas.text}</ItemP>
-          <Input
-            key={key}
-            value={formulas.formula(baseTemp)}
-            onChange={getOnChangeHandler(key)}
-          />
+          <Item key={key}>
+            <ItemP>{formulas.text}</ItemP>
+            <Input
+              value={formulas.formula(baseTemp)}
+              onChange={getOnChangeHandler(key)}
+            />
           </Item>
-        );
+        )
       })}
     </Root>
-  );
-};
+  )
+}
 
 const Root = styled.div`
   color: #333;
@@ -64,12 +67,12 @@ const Root = styled.div`
   display: flex;
   width: fit-content;
   border-radius: 10px;
-`;
+`
 
 const Input = styled.input`
   font-size: 17px;
   margin-right: 20px;
-`;
+`
 
 const Item = styled.div`
   display: flex;
